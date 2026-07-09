@@ -1,0 +1,13 @@
+.git
+.github
+.gradle
+build
+out
+images
+terraform
+docs
+monitoring
+*.md
+.idea
+*.iml
+.vscode

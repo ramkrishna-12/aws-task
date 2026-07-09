@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'taskmaster-app'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      # Local docker-compose target. In ECS, replace with AWS CloudMap service-discovery
+      # DNS names for each task, or run Prometheus with the ECS SD (ecs_sd_config).
+      - targets: ['app:8080']
+        labels:
+          service: 'taskmaster'
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+
+
+# # Example of a scrape config for Prometheus to scrape metrics from a Spring Boot application
+# - job_name: 'spring-boot-app'
+#   metrics_path: '/actuator/prometheus'
+#   static_configs:
+#     - targets: ['spring-boot-app:8080']

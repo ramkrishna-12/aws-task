@@ -1,0 +1,9 @@
+aws_region      = "us-east-1"
+project_name    = "taskmaster"
+environment     = "prod"
+desired_count   = 2
+min_capacity    = 2
+max_capacity    = 6
+task_cpu        = "256"
+task_memory     = "512"
+ecr_max_image_count = 5
