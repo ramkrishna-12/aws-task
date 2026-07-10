@@ -42,3 +42,9 @@ services:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards/json
     depends_on:
       - prometheus
+
+
+# To view the Grafana dashboard, open a browser and go to http://localhost:3000. The default username is "admin" and the password is "admin". You can change the password after logging in.
+# To view the Prometheus dashboard, open a browser and go to http://localhost:9090. You can use the Prometheus query language to explore metrics collected from the app and cAdvisor.
+# To view the cAdvisor dashboard, open a browser and go to http://localhost:8081. This will show you detailed information about the containers running on your system, including resource usage and performance metrics.
+# docker compose -f monitoring/docker-compose.monitoring.yml up --build
