@@ -649,3 +649,10 @@ jobs:
           done
           echo "Deployed service failed health check"
           exit 1
+
+
+
+
+# latest pipeline with build 1st it built and test only and then push to ECR and deploy to ECS and then smoke test the live deployment 
+# this pipeline is designed to build and test a Spring Boot application, push the Docker image to Amazon ECR, deploy it to Amazon ECS, and perform a smoke test on the live deployment. It includes safety checks to scaffold a minimal application if no source code is present, ensuring that the build process can proceed without errors.
+# AWS credintials are configured using OIDC, and the pipeline is triggered on pushes and pull requests to the main branch. The pipeline also includes steps to commit scaffolded source code back to the repository if necessary, and it publishes test reports for review.
