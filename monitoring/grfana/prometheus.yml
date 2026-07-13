@@ -23,3 +23,9 @@ scrape_configs:
 #   metrics_path: '/actuator/prometheus'
 #   static_configs:
 #     - targets: ['spring-boot-app:8080']
+# monitoring:
+#   - job_name: 'cadvisor'
+#   static_configs:
+#     - targets: ['cadvisor:8080']
+# # Example of a scrape config for Prometheus to scrape metrics from a Spring Boot application
+# 
