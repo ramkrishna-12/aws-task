@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: taskmaster-config
+data:
+  SERVER_PORT: "8080"
+  SPRING_ACTIVE_PROFILES: "taskmaster"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus,metrics"
+
+
