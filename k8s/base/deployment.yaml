@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskmaster-app
+  labels:
+    app: taskmaster
+  spec:
+    replicas: 2
+    revisionHisteryLimit: 5
+    strategy:
+      type: RollingUpdate
+      rollingupdate:
+        maxUnavalable: 0
+        maxSurge: 1
+    selector:
+      matchLabels:
+        app: taskmaster
+  teplate:
+    metadata:
+      labels:
+        app: taskmaster
+    spec:
+      serviceAccountName: taskmaster-app
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: taskmaster-app
+        
