@@ -27,3 +27,24 @@ spec:
         fsGroup: 1000
       containers:
         - name: taskmaster-app
+        # Replaced by the CI/CD pipeline via `kustomize edit set image` with the real
+          # ECR URL + git-sha tag at deploy time - same immutable-tag-per-commit pattern
+          # used for the ECS deployment. "taskmaster-app-image" is a symbolic name only;
+          # it never resolves on its own.
+          image: taskmaster-app-image:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: taskmaster-config
+          resources:
+            requests:
+              cpu: 250m
+              memory: 384Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          # Liveness: is the process fundamentally alive? A failure here kills and restarts the pod.
+          livenessProbe:
