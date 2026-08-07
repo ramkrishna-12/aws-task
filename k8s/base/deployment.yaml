@@ -4,18 +4,18 @@ metadata:
   name: taskmaster-app
   labels:
     app: taskmaster
-  spec:
-    replicas: 2
-    revisionHisteryLimit: 5
-    strategy:
-      type: RollingUpdate
-      rollingupdate:
-        maxUnavalable: 0
-        maxSurge: 1
-    selector:
-      matchLabels:
-        app: taskmaster
-  teplate:
+spec:
+  replicas: 2 # overridden per-environment in overlays
+  revisionHistoryLimit: 5 # keeps last 5 ReplicaSets for rollback - same intent as the ECR 5-image retention policy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0   # never drop below desired capacity during a rollout
+      maxSurge: 1         # one extra pod at a time while rolling
+  selector:
+    matchLabels:
+      app: taskmaster
+  template:
     metadata:
       labels:
         app: taskmaster
@@ -27,4 +27,3 @@ metadata:
         fsGroup: 1000
       containers:
         - name: taskmaster-app
-        
