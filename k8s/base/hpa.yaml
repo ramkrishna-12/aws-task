@@ -1,0 +1,27 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: taskmaster-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: taskmaster-app
+  minReplicas: 2 # overridden per-environment in overlays
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60 # same 60% target used for the ECS CPU scaling policy
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 120 # avoid flapping - matches the ECS scale-in cooldown
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
