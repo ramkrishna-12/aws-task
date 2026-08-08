@@ -1,16 +1,18 @@
-apiVersion: networking.k8s.io/va
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: taskmaster-app
   annotations:
-   kubernetes.io/ingress.class: alb
-   alb.ingress.kubernetes.io/scheme: internet-facing
-   alb.ingress.kubernetes.io/target-type: ip
-   alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-   alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
-   alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
-   alb.ingress.kubernetes.io/healthy-threshold-count: "2"
-   alb.ingress.kubernetes.io/unhealthy-threshold-count: "3"
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "3"
+    # For a production listener, add a 443 entry above, an ACM cert ARN annotation,
+    # and a redirect-to-https default action - mirrors the note left on the ECS ALB listener.
 spec:
   rules:
     - http:
@@ -22,4 +24,3 @@ spec:
                 name: taskmaster-app
                 port:
                   number: 80
-                  
