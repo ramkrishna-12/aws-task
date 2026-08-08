@@ -27,7 +27,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: taskmaster-app
-        # Replaced by the CI/CD pipeline via `kustomize edit set image` with the real
+          # Replaced by the CI/CD pipeline via `kustomize edit set image` with the real
           # ECR URL + git-sha tag at deploy time - same immutable-tag-per-commit pattern
           # used for the ECS deployment. "taskmaster-app-image" is a symbolic name only;
           # it never resolves on its own.
@@ -48,3 +48,32 @@ spec:
               memory: 512Mi
           # Liveness: is the process fundamentally alive? A failure here kills and restarts the pod.
           livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+          # Readiness: can it currently take traffic? A failure here pulls the pod from Service
+          # endpoints without killing it - important during slow JVM startup so traffic doesn't
+          # hit a pod that's still warming up.
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp # writable scratch space, needed since readOnlyRootFilesystem is true
+      volumes:
+        - name: tmp
+          emptyDir: {}
